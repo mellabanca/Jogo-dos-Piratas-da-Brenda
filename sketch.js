@@ -8,6 +8,10 @@ var fundo;
 var torre;
 var torreImg;
 
+var canhao;
+var ang;
+var bala;
+
 
 function preload() {
  fundo = loadImage("./assets/background.gif");
@@ -30,6 +34,12 @@ function setup() {
  torre = Bodies.rectangle(160,350,160,310,options);
  World.add(world,torre);
  
+ ang = 20;
+ canhao = new Canhao(180, 120, 130, 100, ang);
+ bala = new Bala(canhao.x, canhao.y);
+
+
+ 
 }
 
 function draw() {
@@ -44,5 +54,7 @@ function draw() {
  imageMode(CENTER);
  image(torreImg,torre.position.x, torre.position.y, 160, 310);
  pop();
-   
+  
+ canhao.mostrar();
+ bala.mostrar();
 }
