@@ -34,12 +34,12 @@ function setup() {
  torre = Bodies.rectangle(160,350,160,310,options);
  World.add(world,torre);
  
+ angleMode(DEGREES);
  ang = 20;
  canhao = new Canhao(180, 120, 130, 100, ang);
+
  bala = new Bala(canhao.x, canhao.y);
 
-
- 
 }
 
 function draw() {
@@ -57,4 +57,10 @@ function draw() {
   
  canhao.mostrar();
  bala.mostrar();
+}
+
+function keyReleased(){
+  if(keyCode === DOWN_ARROW){
+    bala.atirar();
+  }
 }
