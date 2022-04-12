@@ -23,6 +23,22 @@ class Bala {
         var velocity = p5.Vector.fromAngle(newAngle);
         velocity.mult(0.5);
         Matter.Body.setStatic(this.corpo, false);
-        Matter.Body.setVelocity(this.corpo, {x: velocity.x * (180/3.14), y: velocity.y * (3.14/180)});  
+        Matter.Body.setVelocity(this.corpo, {x: velocity.x * (180/3.14), y: velocity.y * (180/3.14)});  
     }
 }
+
+//Exemplos de matrizes
+var matriz1 = [1,2,3,4];
+//console.log(matriz1);
+
+var matriz2 = [1, "Melissa", true];
+//console.log(matriz2[1]);
+
+var matriz3 = [matriz1, matriz2];
+//console.log(matriz3[1][2]);
+
+matriz1.push(5);
+//console.log(matriz1);
+
+matriz1.pop();
+//console.log(matriz1);

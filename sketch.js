@@ -64,3 +64,20 @@ function keyReleased(){
     bala.atirar();
   }
 }
+
+
+//Exemplos de matrizes
+var matriz1 = [1,2,3,4];
+//console.log(matriz1);
+
+var matriz2 = [1, "Melissa", true];
+//console.log(matriz2[1]);
+
+var matriz3 = [matriz1, matriz2];
+//console.log(matriz3[1][2]);
+
+matriz1.push(5);
+//console.log(matriz1);
+
+matriz1.pop();
+//console.log(matriz1);
