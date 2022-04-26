@@ -11,6 +11,9 @@ var torreImg;
 var canhao;
 var ang;
 var bala;
+var navio;
+
+var balas = [];
 
 
 function preload() {
@@ -38,8 +41,7 @@ function setup() {
  ang = 20;
  canhao = new Canhao(180, 120, 130, 100, ang);
 
- bala = new Bala(canhao.x, canhao.y);
-
+ navio = new Navio(width-79, height-60, 170, 170, -80);
 }
 
 function draw() {
@@ -56,13 +58,34 @@ function draw() {
  pop();
   
  canhao.mostrar();
- bala.mostrar();
+ for(var i = 0; i<balas.length; i++){
+   mostrarBalas(balas[i], i);
+ }
+
+ Matter.Body.setVelocity(navio.corpo, {x:-0.9, y:0});
+
+ navio.mostrar();
+
 }
 
 function keyReleased(){
   if(keyCode === DOWN_ARROW){
-    bala.atirar();
+    balas[balas.length -1].atirar();
   }
+
+}
+
+function keyPressed(){
+  if(keyCode === DOWN_ARROW){
+  var bala = new Bala(canhao.x, canhao.y);
+  balas.push(bala);
+  }
+}
+
+function mostrarBalas(bala,i){
+  if (balas){
+    bala.mostrar();
+  } 
 }
 
 

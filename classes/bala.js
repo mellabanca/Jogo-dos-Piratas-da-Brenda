@@ -6,6 +6,7 @@ class Bala {
         this.raio = 30;
         this.corpo = Bodies.circle(x, y, this.raio, config);
         this.imagem = loadImage("./assets/cannonball.png");
+        this.rastro = [];
         World.add(world, this.corpo);
     }
 
@@ -15,6 +16,14 @@ class Bala {
         imageMode(CENTER);
         image(this.imagem, pos.x, pos.y, this.raio, this.raio);
         pop();
+        if (this.corpo.velocity.x > 0 && pos.x > 10){
+            var position = [pos.x, pos.y];
+            this.rastro.push(position);
+            
+        }
+        for(var i = 0; i<this.rastro.length; i++){
+            image(this.imagem, this.rastro[i][0], this.rastro[i][1], 5, 5);
+        }
     }
 
     atirar(){
@@ -27,18 +36,3 @@ class Bala {
     }
 }
 
-//Exemplos de matrizes
-var matriz1 = [1,2,3,4];
-//console.log(matriz1);
-
-var matriz2 = [1, "Melissa", true];
-//console.log(matriz2[1]);
-
-var matriz3 = [matriz1, matriz2];
-//console.log(matriz3[1][2]);
-
-matriz1.push(5);
-//console.log(matriz1);
-
-matriz1.pop();
-//console.log(matriz1);
