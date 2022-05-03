@@ -14,11 +14,17 @@ var bala;
 var navio;
 
 var balas = [];
+var navios = [];
+
+var naviosAnimation = [];
+var naviosSpriteData, naviosSpritesheet;
 
 
 function preload() {
  fundo = loadImage("./assets/background.gif");
  torreImg = loadImage("./assets/tower.png");
+ naviosSpriteData = loadJSON("./assets/boat/boat.json");
+ naviosSpritesheet = loadImage("./assets/boat/boat.png");
 }
 
 function setup() {
@@ -41,7 +47,14 @@ function setup() {
  ang = 20;
  canhao = new Canhao(180, 120, 130, 100, ang);
 
- navio = new Navio(width-79, height-60, 170, 170, -80);
+ var naviosFrames = naviosSpriteData.frames;
+
+ for(var i = 0; i < naviosFrames.length; i++){
+   var pos = naviosFrames[i].position;
+   var img = naviosSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+   naviosAnimation.push(img);
+ }
+
 }
 
 function draw() {
@@ -58,13 +71,14 @@ function draw() {
  pop();
   
  canhao.mostrar();
+ mostrarNavios();
+
  for(var i = 0; i<balas.length; i++){
    mostrarBalas(balas[i], i);
+   colisao(i);
  }
 
- Matter.Body.setVelocity(navio.corpo, {x:-0.9, y:0});
 
- navio.mostrar();
 
 }
 
@@ -83,9 +97,47 @@ function keyPressed(){
 }
 
 function mostrarBalas(bala,i){
-  if (balas){
+  if (bala){
     bala.mostrar();
+    if(bala.corpo.position.x>=width || bala.corpo.position.y >= height - 50){
+      bala.deletar(i);
+    }
   } 
+}
+
+function mostrarNavios(){
+  if (navios.length>0){
+    if (navios[navios.length-1] === undefined || navios[navios.length-1].corpo.position.x < width -300){
+      var positions = [-40, -60, -70, -20];
+      var position = random(positions);
+      var navio = new Navio(width, height-60, 170, 170, position, naviosAnimation);
+      navios.push(navio);
+    } 
+    
+    for(var i = 0; i<navios.length; i++){
+      if (navios[i]){
+        Matter.Body.setVelocity(navios[i].corpo, {x:-0.9,y:0});
+        navios[i].mostrar();
+        navios[i].animacao();
+      }
+    }
+  } else {
+    var  navio = new Navio(width, height-60, 170, 170, -60, naviosAnimation);
+    navios.push(navio);
+  }
+}
+
+function colisao(index){
+  for(var i = 0; i<navios.length; i++){
+    if(balas[index] !== undefined && navios[i] !== undefined){
+      var colide = Matter.SAT.collides(balas[index].corpo, navios[i].corpo);
+      if(colide.collided){
+        navios[i].deletar(i);
+        Matter.World.remove(world,balas[index].corpo);
+        delete balas[index];
+      }
+    }
+  }
 }
 
 
