@@ -7,6 +7,7 @@ class Navio {
         this.imagem = loadImage("./assets/boat.png");
         this.animation = naviosAnimation;
         this.vel = 0.05;
+        this.quebrado = false;
         World.add(world,this.corpo);
     }
 
@@ -28,6 +29,11 @@ class Navio {
     }
 
     deletar(index){
+        this.animation = naviosAnimation0;
+        this.vel = 0.05;
+        this.lar = 300;
+        this.alt = 300;
+        this.quebrado = true;
         setTimeout(()=>{
             Matter.World.remove(world, navios[index].corpo);
             delete navios[index];

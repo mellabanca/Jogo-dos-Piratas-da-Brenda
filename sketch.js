@@ -19,12 +19,24 @@ var navios = [];
 var naviosAnimation = [];
 var naviosSpriteData, naviosSpritesheet;
 
+var naviosAnimation0 = [];
+var naviosSpriteData0, naviosSpritesheet0;
+
+var balaAnimation = [];
+var balaSpriteData, balaSpritesheet;
+
+var gameOver = false;
+
 
 function preload() {
  fundo = loadImage("./assets/background.gif");
  torreImg = loadImage("./assets/tower.png");
  naviosSpriteData = loadJSON("./assets/boat/boat.json");
  naviosSpritesheet = loadImage("./assets/boat/boat.png");
+ naviosSpriteData0 = loadJSON("./assets/boat/brokenBoat.json");
+ naviosSpritesheet0 = loadImage("./assets/boat/brokenBoat.png");
+ balaSpriteData = loadJSON("./assets/waterSplash/waterSplash.json");
+ balaSpritesheet = loadImage("./assets/waterSplash/waterSplash.png");
 }
 
 function setup() {
@@ -53,6 +65,22 @@ function setup() {
    var pos = naviosFrames[i].position;
    var img = naviosSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
    naviosAnimation.push(img);
+ }
+
+ var naviosFrames0 = naviosSpriteData0.frames;
+
+ for(var i = 0; i < naviosFrames0.length; i++){
+   var pos = naviosFrames0[i].position;
+   var img = naviosSpritesheet0.get(pos.x, pos.y, pos.w, pos.h);
+   naviosAnimation0.push(img);
+ }
+
+ var balaFrames = balaSpriteData.frames;
+
+ for(var i = 0; i < balaFrames.length; i++){
+   var pos = balaFrames[i].position;
+   var img = balaSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+   balaAnimation.push(img);
  }
 
 }
@@ -99,6 +127,7 @@ function keyPressed(){
 function mostrarBalas(bala,i){
   if (bala){
     bala.mostrar();
+    bala.animacao();
     if(bala.corpo.position.x>=width || bala.corpo.position.y >= height - 50){
       bala.deletar(i);
     }
@@ -119,6 +148,11 @@ function mostrarNavios(){
         Matter.Body.setVelocity(navios[i].corpo, {x:-0.9,y:0});
         navios[i].mostrar();
         navios[i].animacao();
+        var colide = Matter.SAT.collides(torre, navios[i].corpo);
+        if(colide.collided && !navios[i].quebrado){
+          gameOver = true;
+          acabou();
+        }
       }
     }
   } else {
@@ -138,6 +172,23 @@ function colisao(index){
       }
     }
   }
+}
+
+function acabou(){
+  swal(
+    {
+      title: "Vish, já era",
+      text: "Valeu, fera!",
+      imageUrl: "https://raw.githubusercontent.com/whitehatjr/PiratesInvasion/main/assets/boat.png",
+      imageSize: "150x150",
+      confirmButtonText: "Tente de novo!"
+    },
+    function(isConfirm){
+      if(isConfirm){
+        location.reload();
+      }
+    }
+  )
 }
 
 
